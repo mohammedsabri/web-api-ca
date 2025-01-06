@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
@@ -8,129 +8,114 @@ import MenuIcon from "@mui/icons-material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
 import { useNavigate } from "react-router-dom";
-import { styled } from "@mui/material/styles";
+import { styled } from '@mui/material/styles';
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
+import SearchIcon from "@mui/icons-material/Search";
+import { AuthContext } from "../../contexts/authContext";
 
-const Offset = styled("div")(({ theme }) => theme.mixins.toolbar);
+const Offset = styled('div')(({ theme }) => theme.mixins.toolbar);
 
-const SiteHeader = () => {
+const SiteHeader = (props) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
 
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
-
+  
+  const context = useContext(AuthContext);
   const navigate = useNavigate();
 
   const menuOptions = [
     { label: "Home", path: "/" },
     { label: "Favorites", path: "/movies/favorites" },
-    { label: "Watchlist", path: "/movies/watchlist" },
-    { label: "Upcoming Movies", path: "/movies/UpcomingMovies" },
-    { label: "Trending", path: "/movies/trending" },
-    { label: "Popular", path: "/movies/popular" },
-    { label: "Now playing", path: "/movies/NowPlaying" },
-    { label: "Actors", path: "/people" },
+    { label: "Upcoming", path: "/movies/upcoming" },
+    { label: "Trending Today", path: "/movies/trending/today" },
+    { label: "Top Rated", path: "/movies/ratings" },
+    { label: "Actors", path: "/movies/actors" },
+    { label: <SearchIcon />, path: "/movies/search" },
+    { label: "Login", path: "/movies/login" }
+
+
   ];
 
   const handleMenuSelect = (pageURL) => {
     navigate(pageURL, { replace: true });
-    setAnchorEl(null);
   };
 
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
   };
 
-  return (
+  return(
     <>
-      <AppBar position="fixed" color="primary" elevation={3}>
+      <AppBar position="fixed" color="secondary">
         <Toolbar>
-          {/* Branding/Logo */}
-          <Typography
-            variant="h5"
-            sx={{
-              flexGrow: 1,
-              fontWeight: "bold",
-              display: "flex",
-              alignItems: "center",
-            }}
-          >
+          <Typography variant="h4" sx={{ flexGrow: 1 }}>
             TMDB Client
           </Typography>
-
-          {/* Tagline */}
-          {!isMobile && (
-            <Typography
-              variant="subtitle1"
-              sx={{
-                flexGrow: 1,
-                color: theme.palette.grey[200],
-                fontStyle: "italic",
-              }}
-            >
-              All you ever wanted to know about Movies!
-            </Typography>
-          )}
-
-          {/* Menu: Mobile vs. Desktop */}
-          {isMobile ? (
-            <>
-              <IconButton
-                aria-label="menu"
-                aria-controls="menu-appbar"
-                aria-haspopup="true"
-                onClick={handleMenu}
-                color="inherit"
-              >
-                <MenuIcon />
-              </IconButton>
-              <Menu
-                id="menu-appbar"
-                anchorEl={anchorEl}
-                anchorOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
-                }}
-                keepMounted
-                transformOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
-                }}
-                open={open}
-                onClose={() => setAnchorEl(null)}
-              >
+          <Typography variant="h6" sx={{ flexGrow: 1 }}>
+            All you ever wanted to know about Movies!
+          </Typography>
+            {isMobile ? (
+              <>
+                <IconButton
+                  aria-label="menu"
+                  aria-controls="menu-appbar"
+                  aria-haspopup="true"
+                  onClick={handleMenu}
+                  color="inherit"
+                >
+                  <MenuIcon />
+                </IconButton>
+                <Menu
+                  id="menu-appbar"
+                  anchorEl={anchorEl}
+                  anchorOrigin={{
+                    vertical: "top",
+                    horizontal: "right",
+                  }}
+                  keepMounted
+                  transformOrigin={{
+                    vertical: "top",
+                    horizontal: "right",
+                  }}
+                  open={open}
+                  onClose={() => setAnchorEl(null)}
+                >
+                  {menuOptions.map((opt) => (
+                    <MenuItem
+                      key={opt.label}
+                      onClick={() => handleMenuSelect(opt.path)}
+                    >
+                      {opt.label}
+                    </MenuItem>
+                  ))}
+                </Menu>
+              </>
+            ) : (
+              <>
                 {menuOptions.map((opt) => (
-                  <MenuItem
+                  <Button
                     key={opt.label}
+                    color="inherit"
                     onClick={() => handleMenuSelect(opt.path)}
-                    sx={{ typography: "subtitle1" }}
                   >
                     {opt.label}
-                  </MenuItem>
+                  </Button>
                 ))}
-              </Menu>
-            </>
+              </>
+            )}
+        {context.isAuthenticated ? (
+            <Typography variant="h4" sx={{ flexGrow: 1 }}>
+              Welcome {context.userName}!{" "}
+              <button onClick={() => context.signout()}>Sign out</button>
+            </Typography>
           ) : (
-            <>
-              {menuOptions.map((opt) => (
-                <Button
-                  key={opt.label}
-                  color="inherit"
-                  onClick={() => handleMenuSelect(opt.path)}
-                  sx={{
-                    typography: "subtitle2",
-                    margin: "0 8px",
-                    "&:hover": {
-                      borderBottom: "2px solid white",
-                    },
-                  }}
-                >
-                  {opt.label}
-                </Button>
-              ))}
-            </>
+            <Typography variant="h6" sx={{ flexGrow: 1 }}>
+              You are not logged in{" "}
+              <button onClick={() => navigate('/movies/login')}>Login</button>
+            </Typography>
           )}
         </Toolbar>
       </AppBar>

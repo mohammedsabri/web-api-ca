@@ -1,19 +1,21 @@
-import globals from "globals";
-import pluginJs from "@eslint/js";
-
-/** @type {import('eslint').Linter.Config[]} */
-export default [
-  {
-    files: ["**/*.js"],
-    languageOptions: {
-      globals: globals.node,
-      ecmaVersion: 2015, // ES6
-      sourceType: "module", // Use module format
-    },
-    rules: {
-      "semi": 1,
-      "no-console": "off",
-    },
+export default {
+  env: {
+    es2021: true,
+    node: true
   },
-  pluginJs.configs.recommended,
-];
+  extends: [
+    "eslint:recommended",
+    "plugin:react/recommended"
+  ],
+  parserOptions: {
+    ecmaVersion: "latest",
+    sourceType: "module"
+  },
+  plugins: [
+    "react"
+  ],
+  rules: {
+    "semi": 1,
+    "no-console": "off"
+  }
+};
