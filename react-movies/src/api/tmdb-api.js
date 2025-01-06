@@ -90,22 +90,31 @@ export const getMovieReviews = ({ queryKey }) => {
       throw error;
     });
 };
-  export const getTrendingMovies = () => {
-    return fetch(
-      `https://api.themoviedb.org/3/trending/movie/day?api_key=${process.env.REACT_APP_TMDB_KEY}&language=en-US`
+  // export const getTrendingMovies = () => {
+  //   return fetch(
+  //     `https://api.themoviedb.org/3/trending/movie/day?api_key=${process.env.REACT_APP_TMDB_KEY}&language=en-US`
+  //   )
+  //     .then((response) => {
+  //       if (!response.ok) {
+  //         return response.json().then((error) => {
+  //           throw new Error(error.status_message || "Something went wrong");
+  //         });
+  //       }
+  //       return response.json();
+  //     })
+  //     .catch((error) => {
+  //       throw error;
+  //     });
+  // };
+  export const getTrendingMovies = async () => {
+    const response = await fetch(
+      'http://localhost:8080/api/movies/tmdb/trending', {
+    
+    }
     )
-      .then((response) => {
-        if (!response.ok) {
-          return response.json().then((error) => {
-            throw new Error(error.status_message || "Something went wrong");
-          });
-        }
-        return response.json();
-      })
-      .catch((error) => {
-        throw error;
-      });
+    return response.json();
   };
+
   
 
 
