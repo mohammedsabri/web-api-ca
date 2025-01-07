@@ -46,6 +46,7 @@ const App = () => {
           <Routes>
             
             <Route path="/" element={<HomePage />} />
+            <Route path="/people" element={<ActorsPage />} />
             <Route element={<ProtectedRoutes />}>
             <Route path="/movies/:id" element={<MoviePage />} />
             <Route path="/movies/UpcomingMovies" element={<UpcomingMoviesPage />} />
@@ -54,7 +55,6 @@ const App = () => {
             <Route path="*" element={ <Navigate to="/" /> } />
             <Route path="/movies/popular" element={<PopularMoviesPage />} />
             <Route path="/reviews/form" element={ <AddMovieReviewPage /> } />
-            <Route path="/people" element={<ActorsPage />} />
             <Route path="/movies/favorites" element={<FavoriteMoviesPage />} />
             <Route path="/reviews/:id" element={ <MovieReviewPage /> } />
             <Route path="/actors/:id" element={<ActorDetailsPage />} />
