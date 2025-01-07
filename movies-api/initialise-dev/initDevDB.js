@@ -3,7 +3,7 @@ dotenv.config();
 import mongoose from 'mongoose';
 import users from './users';
 import movies from './movies';
-import Users from '../api/users/userModel';
+import User from '../api/users/userModel';
 import Movie from '../api/movies/movieModel';
 
 async function main() {

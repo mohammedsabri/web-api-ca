@@ -34,7 +34,7 @@ const SiteHeader = (props) => {
     { label: "Top Rated", path: "/movies/ratings" },
     { label: "Actors", path: "/movies/actors" },
     { label: <SearchIcon />, path: "/movies/search" },
-    { label: "Login", path: "/movies/login" }
+    // { label: "Login", path: "/movies/login" }
 
 
   ];
